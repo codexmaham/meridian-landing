@@ -213,11 +213,12 @@ function AutomationVisual() {
 
 
 function IntegrationsVisual() {
-  // Circle center at bottom edge — only top semicircle is visible.
-  // animateMotion on the full circle creates a natural infinite loop.
-  const VW = 340, VH = 190;
-  const CX = 170, CY = VH, R = 155;
-  const DUR = 16; // seconds per full revolution
+  // All 8 icons placed statically on the top semicircle arc.
+  // The entire group rotates CW; each icon counter-rotates to stay upright.
+  const VW = 340, VH = 180;
+  const CX = 170, CY = VH; // center at bottom edge so only top half is visible
+  const R = 130;
+  const DUR = 28; // seconds per full revolution
   const N = 8;
 
   const icons = [
@@ -252,58 +253,50 @@ function IntegrationsVisual() {
     { label: "Zapier", paths: [{ d: "M14.5 2h-5L7 7H2l3.5 5L2 17h5l2.5 5h5l2.5-5H22l-3.5-5L22 7h-5z", f: "#FF4A00" }]},
   ];
 
-  // Full circle path starting from right, going counterclockwise (top half visible, bottom half hidden below viewBox)
-  const circPath = `M ${CX + R},${CY} A ${R},${R} 0 1 0 ${CX - R},${CY} A ${R},${R} 0 1 0 ${CX + R},${CY}`;
+  // Duplicate icons to 16 so exactly 8 fill the visible semicircle at all times
+  const allIcons = [...icons, ...icons];
+  const TOTAL = allIcons.length; // 16
+  // Full circle path — center at bottom edge, only top half visible
+  const circPath = `M ${CX+R},${CY} A ${R},${R} 0 1 0 ${CX-R},${CY} A ${R},${R} 0 1 0 ${CX+R},${CY}`;
 
   return (
-    <svg
-      viewBox={`0 0 ${VW} ${VH}`}
-      width="100%"
-      style={{ display: "block", overflow: "hidden" }}
-    >
+    <svg viewBox={`0 0 ${VW} ${VH}`} width="100%" style={{ display: "block", overflow: "hidden" }}>
       <defs>
-        <path id="orbit" d={circPath} />
-        {/* Fade mask: transparent at sides, opaque in middle */}
-        <linearGradient id="fadeMask" x1="0" y1="0" x2="1" y2="0">
+        <path id="intOrbit" d={circPath} />
+        <linearGradient id="intFade" x1="0" y1="0" x2="1" y2="0">
           <stop offset="0%"   stopColor="white" stopOpacity="0" />
-          <stop offset="15%"  stopColor="white" stopOpacity="1" />
-          <stop offset="85%"  stopColor="white" stopOpacity="1" />
+          <stop offset="10%"  stopColor="white" stopOpacity="1" />
+          <stop offset="90%"  stopColor="white" stopOpacity="1" />
           <stop offset="100%" stopColor="white" stopOpacity="0" />
         </linearGradient>
-        <mask id="edgeMask">
-          <rect x="0" y="0" width={VW} height={VH} fill="url(#fadeMask)" />
+        <mask id="intMask">
+          <rect x="0" y="0" width={VW} height={VH} fill="url(#intFade)" />
         </mask>
       </defs>
 
-      {/* Dashed arc guide (top semicircle only) */}
-      <path
-        d={`M ${CX - R},${CY} A ${R},${R} 0 1 1 ${CX + R},${CY}`}
-        fill="none" stroke="#E5E3DC" strokeWidth="1" strokeDasharray="4 6"
-      />
+      {/* Dashed arc guide */}
+      <path d={`M ${CX - R},${CY} A ${R},${R} 0 1 1 ${CX + R},${CY}`}
+        fill="none" stroke="#E5E3DC" strokeWidth="1" strokeDasharray="4 6" />
 
-      {/* Orbiting icons */}
-      <g mask="url(#edgeMask)">
-        {icons.map((icon, i) => (
+      <g mask="url(#intMask)">
+        {allIcons.map((icon, i) => (
           <g key={i}>
             <animateMotion
               dur={`${DUR}s`}
               repeatCount="indefinite"
-              begin={`${-(i / N) * DUR}s`}
+              begin={`${-(i / TOTAL) * DUR}s`}
               rotate="none"
             >
-              <mpath href="#orbit" />
+              <mpath href="#intOrbit" />
             </animateMotion>
-            {/* Icon centered at origin (animateMotion places this at path point) */}
-            <g transform="translate(-14,-28)">
-              <rect x="3" y="3" width="22" height="22" rx="7" fill="var(--color-bg)" stroke="var(--color-border)" strokeWidth="1" />
-              <svg x="4" y="4" viewBox="0 0 24 24" width="20" height="20">
-                {icon.paths.map((p, j) => (
-                  <path key={j} d={p.d} fill={p.f} opacity={p.o ?? 1} />
-                ))}
+            <g transform="translate(-12,-12)">
+              <rect x="1" y="1" width="22" height="22" rx="7"
+                fill="var(--color-bg)" stroke="var(--color-border)" strokeWidth="1.2" />
+              <svg x="3" y="3" viewBox="0 0 24 24" width="18" height="18">
+                {icon.paths.map((p, j) => <path key={j} d={p.d} fill={p.f} opacity={p.o ?? 1} />)}
               </svg>
-              <text x="14" y="38" textAnchor="middle" fontSize="7" fontWeight="600" fill="#9E9C96" letterSpacing="0.04em">
-                {icon.label}
-              </text>
+              <text x="12" y="34" textAnchor="middle" fontSize="7" fontWeight="600"
+                fill="#9E9C96" letterSpacing="0.04em">{icon.label}</text>
             </g>
           </g>
         ))}
