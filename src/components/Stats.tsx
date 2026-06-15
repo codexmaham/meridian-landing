@@ -100,7 +100,7 @@ export default function Stats() {
                   <div style={{ position: "absolute", left: 0, top: "10%", height: "80%", width: 1, backgroundColor: "rgba(255,255,255,0.08)" }} />
                 )}
                 <div style={{ fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 700, letterSpacing: "-0.04em", color: "#FAFAF8", marginBottom: 10 }}>
-                  <AnimatedNumber end={s.value} value={s.value} suffix={s.suffix} prefix={s.prefix} delay={0.3 + i * 0.1} />
+                  <AnimatedNumber value={s.value} suffix={s.suffix} prefix={s.prefix} delay={0.3 + i * 0.1} />
                 </div>
                 <p style={{ fontSize: 13, fontWeight: 500, color: "rgba(250,250,248,0.45)", margin: 0, letterSpacing: "0.01em" }}>{s.label}</p>
               </motion.div>

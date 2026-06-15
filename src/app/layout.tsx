@@ -31,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} scroll-smooth`}>
-      <body className="min-h-screen antialiased" style={{ backgroundColor: "var(--color-bg)", color: "var(--color-text-primary)" }}>
+      <body suppressHydrationWarning className="min-h-screen antialiased" style={{ backgroundColor: "var(--color-bg)", color: "var(--color-text-primary)" }}>
         <SmoothCursor />
         <ScrollProgress />
         {children}
