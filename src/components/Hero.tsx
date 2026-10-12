@@ -106,14 +106,30 @@ export default function Hero() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
           style={{
-            display: "inline-flex", alignItems: "center", gap: 8,
-            padding: "6px 14px", borderRadius: 999, marginBottom: 32,
-            backgroundColor: "var(--color-surface)", border: "1px solid var(--color-border)",
+            display: "inline-flex", alignItems: "center", gap: 10,
+            padding: "5px 14px 5px 6px", borderRadius: 999, marginBottom: 32,
+            backgroundColor: "#FFFFFF",
+            border: "1px solid rgba(15,15,14,0.08)",
+            boxShadow: "0 1px 2px rgba(15,15,14,0.04), 0 10px 28px rgba(15,15,14,0.06)",
           }}
         >
-          <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: "#22C55E", display: "inline-block" }} />
-          <span style={{ fontSize: 12, fontWeight: 500, color: "var(--color-text-secondary)" }}>
-            Now in public beta — join 12,000+ teams
+          <span style={{
+            width: 22, height: 22, borderRadius: 999, flexShrink: 0,
+            display: "inline-flex", alignItems: "center", justifyContent: "center",
+            backgroundColor: "rgba(34,197,94,0.14)",
+          }}>
+            <motion.span
+              style={{ width: 7, height: 7, borderRadius: "50%", backgroundColor: "#16A34A", display: "inline-block" }}
+              animate={{ boxShadow: ["0 0 0 0 rgba(22,163,74,0.45)", "0 0 0 5px rgba(22,163,74,0)"] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
+            />
+          </span>
+          <span style={{ fontSize: 13, fontWeight: 600, letterSpacing: "-0.01em", color: "var(--color-text-primary)" }}>
+            Public beta
+          </span>
+          <span style={{ width: 1, height: 12, backgroundColor: "var(--color-border)", display: "inline-block" }} />
+          <span style={{ fontSize: 13, fontWeight: 500, color: "var(--color-text-secondary)" }}>
+            Join 12,000+ teams
           </span>
         </motion.div>
 
@@ -159,18 +175,34 @@ export default function Hero() {
         {/* Social proof */}
         <motion.div
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.75 }}
-          style={{ marginTop: 40, display: "flex", alignItems: "center", gap: 12 }}
+          style={{ marginTop: 40, display: "flex", alignItems: "center", gap: 14 }}
         >
           <div style={{ display: "flex" }}>
-            {["#C8622A","#2D6A4F","#1A5276","#7D3C98","#5C5B57"].map((color, i) => (
-              <div key={i} style={{ width: 28, height: 28, borderRadius: "50%", backgroundColor: color, color: "white", fontSize: 11, fontWeight: 600, display: "flex", alignItems: "center", justifyContent: "center", marginLeft: i > 0 ? -8 : 0, border: "2px solid var(--color-bg)", position: "relative", zIndex: 5 - i }}>
-                {["S","M","A","R","T"][i]}
+            {[
+              { src: "/logos/figma.svg", alt: "Figma" },
+              { src: "/logos/slack.svg", alt: "Slack" },
+              { src: "/logos/notion.svg", alt: "Notion" },
+              { src: "/logos/github.svg", alt: "GitHub" },
+            ].map((logo, i) => (
+              <div key={logo.alt} style={{ width: 34, height: 34, borderRadius: "50%", backgroundColor: "#FFFFFF", display: "flex", alignItems: "center", justifyContent: "center", marginLeft: i > 0 ? -8 : 0, border: "2px solid #FFFFFF", boxShadow: "0 0 0 1px rgba(15,15,14,0.08), 0 1px 2px rgba(15,15,14,0.08)", position: "relative", zIndex: 4 - i }}>
+                <img src={logo.src} alt={logo.alt} width={18} height={18} style={{ width: 18, height: 18, objectFit: "contain", display: "block" }} />
               </div>
             ))}
           </div>
-          <p style={{ fontSize: 13, color: "var(--color-text-muted)", margin: 0 }}>
-            <strong style={{ color: "var(--color-text-secondary)", fontWeight: 600 }}>4.9/5</strong> from 2,400+ reviews
-          </p>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 2 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 1, color: "#C8622A" }} aria-hidden>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <svg key={i} width="13" height="13" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M8 1.2l1.7 3.9 4.2.4-3.2 2.8.9 4.1L8 10.4 4.4 12.4l.9-4.1L2.1 5.5l4.2-.4L8 1.2z" />
+                </svg>
+              ))}
+            </div>
+            <p style={{ fontSize: 13, lineHeight: 1.2, color: "var(--color-text-secondary)", margin: 0 }}>
+              <strong style={{ color: "var(--color-text-primary)", fontWeight: 600 }}>4.9</strong>
+              <span style={{ color: "var(--color-text-muted)" }}>/5</span>
+              {" "}from 2,400+ reviews
+            </p>
+          </div>
         </motion.div>
       </motion.div>
 
